@@ -3,33 +3,75 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+const title = "React"
 
+// Creating a JS object
+const welcome = {
+  title: "React",
+  greeting: "Hey",
+}
+
+// A function for getting the title
+function getTitle(title) {
+  return title;
+}
+const list = [
+  {
+    title: 'React',
+    url: 'https://react.dev/',
+    author: 'Jordan Walke',
+    num_comments: 3,
+    points: 4,
+    objectID: 0,
+  },
+  {
+    title: 'Redux',
+    url: 'https://redux.js.org/',
+    author: 'Dan Abramov, Andrew Clark',
+    num_comments: 2,
+    points: 5,
+    objectID: 1,
+  }
+]
+
+const items = ['string', 'name', 'number'];
+
+// This is a REACT COPMONENT, but it's specifically an APP COMPONENT
+function App() {
   return (
     <>
       <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        {/* <h1>{welcome.greeting} {welcome.title}</h1> */}
+        {/* Here, we us a function defined globally to get the title (title is passed as a parameter' */} 
+        <h1>Hello {getTitle('React')}</h1>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+      <div>
+        {/* Remeber to use "htmlFor" */}
+        <label htmlFor='search'>search</label>
+        <input id='search'type='text' />
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      {/* Here, we use a map function to output a list */} 
+      <div>
+        <ul>
+          {items.map((item) => (
+            <li key={item.indexOf}>{item}</li> 
+          ))}
+        </ul>
+      </div>
+      {/* Here, we use the map method to get the title of each item in the list */} 
+      <div>
+        <ul>
+          {list.map((object) => (
+            <li key={object.objectID}>{object.title}</li> 
+          ))}
+        </ul>
+      </div>
     </>
   )
 }
 
-export default App
+export default App;
+
+/* React Fast Refresh is what bridges React and the dev server
+* Though, on the server side, this bridge is called Hot Module Replacement
+*/
