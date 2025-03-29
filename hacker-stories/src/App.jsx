@@ -45,11 +45,8 @@ function App() {
         {/* Here, we us a function defined globally to get the title (title is passed as a parameter' */} 
         <h1>Hello {getTitle('React')}</h1>
       </div>
-      <div>
-        {/* Remeber to use "htmlFor" */}
-        <label htmlFor='search'>search</label>
-        <input id='search'type='text' />
-      </div>
+      <hr />
+      <Search />
       {/* Here, we use a map function to output a list */} 
       <div>
         <ul>
@@ -78,24 +75,42 @@ function App() {
           })}
         </ul>
       </div>
-      <div>
-        {/* Render it All */}
-        <ul>
-          {list.map((object) => (
-            <li key={object.objectID}>
-              <span>{object.title}</span>
-              <span><a href={object.url}>{object.title}</a></span>
-              <span>{object.num_comments}</span>
-              <span>{object.points}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-  
+      <hr />
+      <List />
     </>
   )
 }
 
+// Building our first component to handle the lists
+function List() {
+  const item = 
+  return (
+    <div>
+      {/* Render it All */}
+      <ul>
+        {list.map((object) => (
+          <li key={object.objectID}>
+            <span>{object.title}</span>
+            <span><a href={object.url}>{object.title}</a></span>
+            <span>{object.num_comments}</span>
+            <span>{object.points}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+function Search() {
+  return (
+    <div>
+      {/* Remeber to use "htmlFor" */}
+      <label htmlFor='search'>search</label>
+      <input id='search'type='text' />
+    </div>
+  )
+}
+// Extracting label an search into their own components
 export default App;
 
 /* React Fast Refresh is what bridges React and the dev server
