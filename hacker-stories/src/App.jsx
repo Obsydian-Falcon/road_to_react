@@ -66,6 +66,32 @@ function App() {
           ))}
         </ul>
       </div>
+      {/* Here, we do the same as above but with a fucntion */} 
+      <div>
+        <ul>
+          {list.map(function (object, index) {
+            return (
+              <li key={index}>
+                {object.title}
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+      <div>
+        {/* Render it All */}
+        <ul>
+          {list.map((object) => (
+            <li key={object.objectID}>
+              <span>{object.title}</span>
+              <span><a href={object.url}>{object.title}</a></span>
+              <span>{object.num_comments}</span>
+              <span>{object.points}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+  
     </>
   )
 }
