@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 const App = () => {
-  console.log("App Rendered");
   const stories = [
     {
       title: 'React',
@@ -21,25 +20,14 @@ const App = () => {
     },
   ];
 
-  // A 
-  // This is the callback start, the event handler
-  const handleSearch = (e) => {
-    // D
-    // Here, the handler exececuted in "C" is "called back",
-    // thus triggering the event it was designed to handle
-    // Now, App won't re-render itself, but be aware of the change.
-    console.log("Handler Working" + e.target.value)
-  }
+  const handleSearch = (event) => {
+    console.log(event.target.value);
+  };
 
   return (
     <div>
       <h1>My Hacker Stories</h1>
 
-      {/* B 
-      // Here, the event handler is sent as a function
-      // in props. Thus, it can reach another component.
-      //
-      */}
       <Search onSearch={handleSearch} />
 
       <hr />
@@ -50,15 +38,12 @@ const App = () => {
 };
 
 const Search = (props) => {
-  console.log("Search Rendered");
   const [searchTerm, setSearchTerm] = React.useState('');
 
-  const handleChange = (e) => {
-    setSearchTerm(e.target.value);
+  const handleChange = (event) => {
+    setSearchTerm(event.target.value);
 
-    // C
-    // Here, the function passed via a prop is executed as a handler.
-    props.onSearch(e);
+    props.onSearch(event);
   };
 
   return (
@@ -73,14 +58,13 @@ const Search = (props) => {
   );
 };
 
-const List = (props) => {
-  console.log("List Rendered");
+const List = (props) => (
   <ul>
     {props.list.map((item) => (
       <Item key={item.objectID} item={item} />
     ))}
   </ul>
-};
+);
 
 const Item = (props) => (
   <li>
@@ -95,15 +79,8 @@ const Item = (props) => (
 
 export default App;
 
-// --------- CALLBACK HANDLERS IN JSX NOTES -----------
-// Props allow us to transport info to descendent components,
-// state helps us make information stateful, but it's only passed
-// on using a prop (thus only to descendents).
-//
-// The "Search" component doesn't share its state with other components.
-// But what if we wanted "Serarch" to have a filter?
-//
-// The Code above, with A, B, C, and D labelled, that code shows
-// that an EVENT HANDLER is only a CALLBACK HANDLER, if it includes
-// A, B, C, and D
-// --------- CALLBACK HANDLERS IN JSX NOTES -----------
+// -------- LIFTING STATE IN REACT NOTES ---------
+// What if we wanted searchTerm in the search component to filter
+// stories by their title property in the App component before they are passed to
+// the list component as props.
+// -------- LIFTING STATE IN REACT END ---------
