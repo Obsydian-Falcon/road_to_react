@@ -34,9 +34,6 @@ const App = () => {
     <div>
       <h1>My Hacker Stories</h1>
 
-      {/* HTML should know about the state of the variables it
-        is changing, thus we pass the state here.
-      */}
       <Search search={searchTerm} onSearch={handleSearch} />
 
       <hr />
@@ -46,39 +43,35 @@ const App = () => {
   );
 };
 
-const Search = (props) => (
+const Search = ({ search, onSearch }) => (
   <div>
     <label htmlFor="search">Search: </label>
-    {/* Here, the state of the search is stored in the "value" variable */}
-    <input id="search" type="text" value={props.search} onChange={props.onSearch} />
+    <input
+      id="search"
+      type="text"
+      value={search}
+      onChange={onSearch}
+    />
   </div>
 );
 
-const List = (props) => (
+const List = ({ list }) => (
   <ul>
-    {props.list.map((item) => (
+    {list.map((item) => (
       <Item key={item.objectID} item={item} />
     ))}
   </ul>
 );
 
-const Item = (props) => (
+const Item = ({ item }) => (
   <li>
     <span>
-      <a href={props.item.url}>{props.item.title}</a>
+      <a href={item.url}>{item.title}</a>
     </span>
-    <span>{props.item.author}</span>
-    <span>{props.item.num_comments}</span>
-    <span>{props.item.points}</span>
+    <span>{item.author}</span>
+    <span>{item.num_comments}</span>
+    <span>{item.points}</span>
   </li>
 );
 
 export default App;
-
-//----- REACT CONTROLLED COMPONENTS NOTES ----- 
-// In sharing the "Search" state via a prop. now the HTML element
-// for search is a CONTROLLED ELEMENT and the "Search" component
-// is a CONTROLLED COMPONENT.
-//
-// These are important, because we want to enforce predictable behaviour.
-//----- REACT CONTROLLED COMPONENTS END ----- 
