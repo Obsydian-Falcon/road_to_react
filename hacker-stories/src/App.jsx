@@ -37,36 +37,37 @@ const list = [
 const items = ['string', 'name', 'number'];
 
 // This is a REACT COPMONENT, but it's specifically an APP COMPONENT
-function App() {
+// Now, gonna change the APP function to an arrow function
+const App = () => {
   return (
     <>
       <div>
         {/* <h1>{welcome.greeting} {welcome.title}</h1> */}
-        {/* Here, we us a function defined globally to get the title (title is passed as a parameter' */} 
+        {/* Here, we us a function defined globally to get the title (title is passed as a parameter' */}
         <h1>Hello {getTitle('React')}</h1>
       </div>
       <hr />
       <Search />
-      {/* Here, we use a map function to output a list */} 
+      {/* Here, we use a map function to output a list */}
       <div>
         <ul>
           {items.map((item) => (
-            <li key={item.indexOf}>{item}</li> 
+            <li key={item.indexOf}>{item}</li>
           ))}
         </ul>
       </div>
-      {/* Here, we use the map method to get the title of each item in the list */} 
+      {/* Here, we use the map method to get the title of each item in the list */}
       <div>
         <ul>
           {list.map((object) => (
-            <li key={object.objectID}>{object.title}</li> 
+            <li key={object.objectID}>{object.title}</li>
           ))}
         </ul>
       </div>
-      {/* Here, we do the same as above but with a fucntion */} 
+      {/* Here, we do the same as above but with a fucntion */}
       <div>
         <ul>
-          {list.map(function (object, index) {
+          {list.map(function(object, index) {
             return (
               <li key={index}>
                 {object.title}
@@ -82,37 +83,121 @@ function App() {
 }
 
 // Building our first component to handle the lists
-function List() {
-  const item = 
-  return (
-    <div>
-      {/* Render it All */}
-      <ul>
-        {list.map((object) => (
-          <li key={object.objectID}>
-            <span>{object.title}</span>
-            <span><a href={object.url}>{object.title}</a></span>
-            <span>{object.num_comments}</span>
-            <span>{object.points}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  )
+// Changing this function to an arrow
+const List = () => {
+  <div>
+    {/* Render it All */}
+    <ul>
+      {/* Refactoring the map function */}
+      {list.map((object) => (
+        <li key={object.objectID}>
+          <span>{object.title}</span>
+          <span><a href={object.url}>{object.title}</a></span>
+          <span>{object.num_comments}</span>
+          <span>{object.points}</span>
+        </li>
+      ))}
+      {/*
+      {list.map((object) => (
+        <li key={object.objectID}>
+          <span>{object.title}</span>
+          <span><a href={object.url}>{object.title}</a></span>
+          <span>{object.num_comments}</span>
+          <span>{object.points}</span>
+        </li>
+      ))}
+      */}
+    </ul>
+  </div>
 }
 
+// Since this just does a RETURN, we can shorten it as such
+// However, block bodies may be neccesarry for more business logic
+// So, write all as ACTUAL functions then refactor to simpler ones
+//---FUNCTION IN A DIFFERENT STYLE ---
+//const Search = () =>
+//  <div>
+//    {/* Remeber to use "htmlFor" */}
+//   {/*<h2>THIS IS SEARCH COMPONENT</h2>*/}
+//    <label htmlFor='search'>search</label>
+//    <input id='search' type='text' />
+//  </div>
+//  -----FUNCTION END ------------
+
+// New search while working with handlers
+// Handler Function in JSX (book)
 function Search() {
+  // define a function (business logic) here
+  const handleChange = (e) => {
+    // synthetic event
+    console.log(e);
+    // value of the target (the input HTML element)
+    console.log(e.target.value);
+  };
+  // Preface handlers with "handle". 
+  // So handleClick, handBlur, etc... for the names
+  const handleBlur = (e) => {
+
+    console.log(e);
+    console.log(e.taget.value);
+    document.getElementById('search').style.background = 'blue';
+
+  };
   return (
     <div>
       {/* Remeber to use "htmlFor" */}
+      {/*<h2>THIS IS SEARCH COMPONENT</h2>*/}
       <label htmlFor='search'>search</label>
-      <input id='search'type='text' />
+      {/* Here, we make the onChange handler CALL BACK to the handleChange method */}
+      <input id='search' type='text' onChange={handleChange} onBlurCapture={handleBlur} />
     </div>
-  )
+  );
 }
+
+
 // Extracting label an search into their own components
 export default App;
 
+
+//------ NOTES -----
 /* React Fast Refresh is what bridges React and the dev server
 * Though, on the server side, this bridge is called Hot Module Replacement
+*
+*JS and React componetnts are not related
+*
+* In JS, classes can define functions associated with a class instance.
+* These are called methods or class methods. An instance is created with the
+* "new" statement.
+*
+* Should  JS class decleration exist, one may createa multiple instances of it.
+*
+* Similar to JS classes with decleration and instantiation, a React component has only ONE 
+* decleration but multiple instances.
+* 
+* Once a component is defined. We can use it as an ELEMENT anywher in our JSX.
+* 
+* An element is an instance of the component. 
+*
+* The React DOM is used once in the application to hook React into the native HTML world.
+*
+* The createRoot() method helps to instantiate React (declared in main.jsx)
+*  Usually, there will only be one createRoot() method unlesss working with
+*  legacy applications
+*
+*  The components created so far are "function components" this can be leveraged so that we can declare
+*  functions in JS for them.
+*
+*  If an arrow function's only purpose is to return a value and it doesn't have
+*  any business logic in bewtwen, the block body (curly braces) can be removed
+*
+*  in a CONCISE BODY, an IMPLICIT RETURN statement is attached, so the return staement can be removed
+*
+*  const addOne = (count) => {
+*    return count + 1;
+*  }
+*         |
+*  IS TURNED INTO 
+*  
+*  const addOne = (count) =>
+*   count + 1;
 */
