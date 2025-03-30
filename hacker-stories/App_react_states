@@ -123,6 +123,9 @@ export default App;
 // "useState" is a REACT HOOK. One of several.
 // Can have as many "useState" as we want.
 //
+// React batches state updates and re-renders asynchrynously,
+// calling setState won't guerantee an immediate re-render.
+//
 // "useState" relies on "Closure" which is essnetially when a function
 // relies on an inner function that allows cousin functions to 
 // change the shared information.
