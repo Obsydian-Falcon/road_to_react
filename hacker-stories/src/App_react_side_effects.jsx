@@ -20,16 +20,27 @@ const App = () => {
     },
   ];
 
+  // Here, we get the local storage value if it exists for the initial state
   const [searchTerm, setSearchTerm] = React.useState(
     localStorage.getItem('search') || 'React'
+
+    // This vesion of the method uses the nullish coalescing operator,
+    // here, if one were to backspace in search, the refreshed value would 
+    // be an empty string instead of "React"
+    // localStorage.getItem('search') ?? 'React'
   );
 
+  // Handle the side-effect of the localized search storage in 
+  // a dedicated useEffect
   React.useEffect(() => {
     localStorage.setItem('search', searchTerm);
-  }, [searchTerm]);
+  }, [searchTerm]); // Here, "searchTerm" serves as a dependency array that useEffect needs
 
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+
+    // Here we store the search in local storage
+    // localStorage.setItem('search', e.target.value)
   };
 
   const searchedStories = stories.filter((story) =>
@@ -81,3 +92,21 @@ const Item = ({ item }) => (
 );
 
 export default App;
+
+
+//-------- REACT SIDE EFFECTS --------
+// Currently search terms in the React App are dissapearing 
+// once the browser is closed and opened again.
+//
+// Remembering the most recent search would be a neat feature
+// wouldn't it?
+//
+// So a side effect would store the browser's recent search history
+// in local storage and retreive it upon initial component initialization.
+//
+// So now, with the initial state saved in local storage, if the tab
+// is refreshed, the user will still have their last search stored.
+//
+// However, now that the handler has a side-effect, we've got to be aware
+// of not adding any bugs whilst doing this
+//-------- REACT SIDE EFFECTS END --------
