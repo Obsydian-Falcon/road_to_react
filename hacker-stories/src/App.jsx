@@ -1,6 +1,11 @@
 import * as React from 'react';
 
+// Coming back from a month hiatus, gonna just note this up
+
+// The App component
 const App = () => {
+
+  // An array of content to show on the site
   const stories = [
     {
       title: 'React',
@@ -20,12 +25,15 @@ const App = () => {
     },
   ];
 
+  // The search-bar state, searchTerm gets set from an inital state of "React"
   const [searchTerm, setSearchTerm] = React.useState('React');
 
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
+  // Search handler that is called from the return statement
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
   };
 
+  // Get the stories and filter them based on the search input
   const searchedStories = stories.filter((story) =>
     story.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -33,16 +41,24 @@ const App = () => {
   return (
     <div>
       <h1>My Hacker Stories</h1>
-
+      
+      {/* Here, use the Search component and set the handler
+          Also, send the searchTerm as a prop
+      */}
       <Search search={searchTerm} onSearch={handleSearch} />
 
       <hr />
 
+      {/* Here, we return a list of the searched stories.
+          The list will be passed as a prop
+      */}
       <List list={searchedStories} />
     </div>
   );
 };
 
+// The search component, it deconstructs the props passed in from the App component
+// Makes a label for the search and sets the value and onChange with the passed props.
 const Search = ({ search, onSearch }) => (
   <div>
     <label htmlFor="search">Search: </label>
@@ -55,6 +71,8 @@ const Search = ({ search, onSearch }) => (
   </div>
 );
 
+// Takes a list prop and creates a list html.
+// Gets each item in the list and adds it to an unordered list
 const List = ({ list }) => (
   <ul>
     {list.map((item) => (
@@ -63,6 +81,7 @@ const List = ({ list }) => (
   </ul>
 );
 
+// Encapsulates the contents of a list item
 const Item = ({ item }) => (
   <li>
     <span>
