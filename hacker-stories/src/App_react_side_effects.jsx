@@ -1,6 +1,11 @@
 import * as React from 'react';
 
+// Coming back from a month hiatus, gonna just note this up
+
+// The App component
 const App = () => {
+
+  // An array of content to show on the site
   const stories = [
     {
       title: 'React',
@@ -19,30 +24,24 @@ const App = () => {
       objectID: 1,
     },
   ];
-
-  // Here, we get the local storage value if it exists for the initial state
+ 
+  //B: Set the search immediately, if there's no stored state, use the default, "React"
   const [searchTerm, setSearchTerm] = React.useState(
+    //A: Setting the side-effect and retrieve it upon component initialization
     localStorage.getItem('search') || 'React'
-
-    // This vesion of the method uses the nullish coalescing operator,
-    // here, if one were to backspace in search, the refreshed value would 
-    // be an empty string instead of "React"
-    // localStorage.getItem('search') ?? 'React'
   );
 
-  // Handle the side-effect of the localized search storage in 
-  // a dedicated useEffect
   React.useEffect(() => {
     localStorage.setItem('search', searchTerm);
-  }, [searchTerm]); // Here, "searchTerm" serves as a dependency array that useEffect needs
+  }, [searchTerm]);
 
+  // Search handler that is called from the return statement
+  // Here, if the browser is closed, the search component remembers the most recent serach.
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
-
-    // Here we store the search in local storage
-    // localStorage.setItem('search', e.target.value)
   };
 
+  // Get the stories and filter them based on the search input
   const searchedStories = stories.filter((story) =>
     story.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -50,16 +49,24 @@ const App = () => {
   return (
     <div>
       <h1>My Hacker Stories</h1>
-
+      
+      {/* Here, use the Search component and set the handler
+          Also, send the searchTerm as a prop
+      */}
       <Search search={searchTerm} onSearch={handleSearch} />
 
       <hr />
 
+      {/* Here, we return a list of the searched stories.
+          The list will be passed as a prop
+      */}
       <List list={searchedStories} />
     </div>
   );
 };
 
+// The search component, it deconstructs the props passed in from the App component
+// Makes a label for the search and sets the value and onChange with the passed props.
 const Search = ({ search, onSearch }) => (
   <div>
     <label htmlFor="search">Search: </label>
@@ -72,6 +79,8 @@ const Search = ({ search, onSearch }) => (
   </div>
 );
 
+// Takes a list prop and creates a list html.
+// Gets each item in the list and adds it to an unordered list
 const List = ({ list }) => (
   <ul>
     {list.map((item) => (
@@ -80,6 +89,7 @@ const List = ({ list }) => (
   </ul>
 );
 
+// Encapsulates the contents of a list item
 const Item = ({ item }) => (
   <li>
     <span>
@@ -93,20 +103,20 @@ const Item = ({ item }) => (
 
 export default App;
 
-
-//-------- REACT SIDE EFFECTS --------
-// Currently search terms in the React App are dissapearing 
-// once the browser is closed and opened again.
+// ----- REACT SIDE-EFFECTS NOTES -----
+// A react component has output defined by its props and state.
+// 
+// Side-effects may affect the output of components since they are used to
+// interact with third-party APIs (like localStorage)
+// 
+// With A and B, upon refresh, the browser tab will remember the last input,
+// this is basically syncing browser local state with React state
 //
-// Remembering the most recent search would be a neat feature
-// wouldn't it?
+// There is a flaw, the hadnler has a side-effect. If we use the "setSearchTerm" function
+// later in our application, we break the feature because local storage doesn't update.
 //
-// So a side effect would store the browser's recent search history
-// in local storage and retreive it upon initial component initialization.
+// So we handle the side-effect in a centralized plaace instead.
 //
-// So now, with the initial state saved in local storage, if the tab
-// is refreshed, the user will still have their last search stored.
-//
-// However, now that the handler has a side-effect, we've got to be aware
-// of not adding any bugs whilst doing this
-//-------- REACT SIDE EFFECTS END --------
+// Basically, with useEffect hook instead of managing the side-effect in the event handler has made the application more robust
+// Whenever and wherever the searchTerm state is updated with setSearchTerm, the browser's local storage will update
+// ----- REACT SIDE-EFFECTS NOTES END -----
