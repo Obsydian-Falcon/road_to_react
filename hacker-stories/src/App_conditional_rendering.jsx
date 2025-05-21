@@ -24,19 +24,9 @@ const getAsyncStories = () =>
   new Promise((resolve) =>
     setTimeout(
       () => resolve({ data: { stories: initialStories } }),
-      2000
+      5000 // Set the loading to five seconds
     )
   );
-
-// Instantiaiting the reducer
-const storiesReducer = (state, action) => {
-  if (action.type === 'SET_STORIES') {
-    return action.payload;
-  }
-  else {
-    throw new Error();
-  }
-};
 
 
 const useStorageState = (key, initialState) => {
@@ -58,7 +48,9 @@ const App = () => {
   );
 
   const [stories, setStories] = React.useState([]);
+  // Boolean to keep track of whether the page is loading or not
   const [isLoading, setIsLoading] = React.useState(true);
+  // Boolean to keep track of errors returned by the API (API doesn't exist in this example)
   const [isError, setIsError] = React.useState(false);
 
   // The side-effect to get the data for the client
@@ -104,6 +96,7 @@ const App = () => {
 
       {isError && <h1>SOMETHING WENT WRONG</h1>}
 
+      {/* JSX in order to ensure that loading shows up when it needs to */}
       {isLoading ? (
         <h1>LOADING....</h1>
       ) : (
@@ -174,14 +167,11 @@ const Item = ({ item, onRemoveItem }) => (
 
 export default App;
 
-//----- REACT ADVANCED STATE NOTES ----
-// Been using 'useState' a lot lately, but 'useReducer' can also be useful.
+//----- REACT CONDITIONAL RENDERING NOTES ----
+// Here, we're going to try and have some loading going on while we wait for 
+// async data to come back
 //
-// Since there are multiple states that are dependent on each other and in the same domain of fetching data
-// (isLoading, isError, stories), we want to have a state that manages them all instead of three seperate states.
-//
-// A reducer action is always associated with a "type" of some sort and is also associated with a payload
-// If the type matches a condition in the reducer, we return a new state based on the incoming state and action.
-//
-//
-//----- REACT ADVANCED STATE NOTES ENDS ----
+// Basically, we just have a loading state that will show on the page
+// if there is no data in the story array/list. Same goes for errors, (though)
+// we're not using a real API yet.
+//----- REACT CONDITIONAL RENDERING NOTES END ----
